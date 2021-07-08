@@ -164,10 +164,13 @@ def createDestinationTable(sourceTable):
     print(f"AttributeDefinitionsJustKeys: {AttributeDefinitionsJustKeys}")
     
     target_table = target_dynamodb.create_table(
-    TableName=destinationTableName,
-    KeySchema=source_table.key_schema,
-    AttributeDefinitions=AttributeDefinitionsJustKeys,
-    BillingMode='PAY_PER_REQUEST')
+      TableName=destinationTableName,
+      KeySchema=source_table.key_schema,
+      AttributeDefinitions=AttributeDefinitionsJustKeys,
+      LocalSecondaryIndexes=source_table.local_secondary_indexes,
+      GlobalSecondaryIndexes=source_table.global_secondary_indexes,
+      source_table.local_secondary_indexes,
+      BillingMode='PAY_PER_REQUEST')
 
     target_table.wait_until_exists()
     target_table.reload()
