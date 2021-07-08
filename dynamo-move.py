@@ -156,13 +156,15 @@ def doesNotExist():
 def createDestinationTable(sourceTable):
     print("Inside createDestinationTable")
     source_table = source_session.resource('dynamodb').Table(sourceTable)
+    print(source_table)
+    print(source_table.__dict__)
     
     print(f"KeySchema: {source_table.key_schema}")
     print(f"AttributeDefinitions: {source_table.attribute_definitions}")
     JustKeys = [Key['AttributeName'] for Key in source_table.key_schema]
     AttributeDefinitionsJustKeys = [Att for Att in source_table.attribute_definitions if Att['AttributeName'] in JustKeys]
     print(f"AttributeDefinitionsJustKeys: {AttributeDefinitionsJustKeys}")
-    
+
     target_table = target_dynamodb.create_table(
       TableName=destinationTableName,
       KeySchema=source_table.key_schema,
