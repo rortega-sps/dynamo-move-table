@@ -161,10 +161,7 @@ def createDestinationTable(sourceTable):
     TableName=destinationTableName,
     KeySchema=source_table.key_schema,
     AttributeDefinitions=source_table.attribute_definitions,
-    ProvisionedThroughput={
-        'ReadCapacityUnits': 5,
-        'WriteCapacityUnits': 5
-    })
+    BillingMode='PAY_PER_REQUEST')
 
     target_table.wait_until_exists()
     target_table.reload()
