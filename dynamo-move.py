@@ -161,7 +161,6 @@ def createDestinationTable(sourceTable):
     JustKeys = [Key['AttributeName'] for Key in source_table.key_schema]
     AttributeDefinitionsJustKeys = [Att for Att in source_table.attribute_definitions if Att['AttributeName'] in JustKeys]
     print(f"AttributeDefinitionsJustKeys: {AttributeDefinitionsJustKeys}")
-    
     target_table = target_dynamodb.create_table(
     TableName=destinationTableName,
     KeySchema=source_table.key_schema,
