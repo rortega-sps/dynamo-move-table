@@ -34,6 +34,8 @@ jobs:
         run: |
           pip install boto3
           echo Respaldando tabla 1 sia-afore-aims-cat-divisas-dev
-          python dynamo-move.py -sa ${{secrets.AWS_KEY_ID_DEVELOP}} -ss ${{secrets.AWS_KEY_SECRET_DEVELOP}} -da ${{secrets.AWS_KEY_ID_PREPROD}} -ds ${{secrets.AWS_KEY_SECRET_PREPROD}} -st sia-afore-aims-cat-divisas-dev -dt sia-afore-aims-cat-divisas-pre 
+          time python dynamo-move.py -sa ${{secrets.AWS_KEY_ID_DEVELOP}} -ss ${{secrets.AWS_KEY_SECRET_DEVELOP}} -da ${{secrets.AWS_KEY_ID_PREPROD}} -ds ${{secrets.AWS_KEY_SECRET_PREPROD}} -st sia-afore-aims-cat-divisas-dev -dt sia-afore-aims-cat-divisas-pre 
           echo Respaldando tabla 2 sia-afore-aims-cat-operaciones-dev
-          python dynamo-move.py -sa ${{secrets.AWS_KEY_ID_DEVELOP}} -ss ${{secrets.AWS_KEY_SECRET_DEVELOP}} -da ${{secrets.AWS_KEY_ID_PREPROD}} -ds ${{secrets.AWS_KEY_SECRET_PREPROD}} -st sia-afore-aims-cat-operaciones-dev -dt sia-afore-aims-cat-operaciones-pre 
+          time python dynamo-move.py -sa ${{secrets.AWS_KEY_ID_DEVELOP}} -ss ${{secrets.AWS_KEY_SECRET_DEVELOP}} -da ${{secrets.AWS_KEY_ID_PREPROD}} -ds ${{secrets.AWS_KEY_SECRET_PREPROD}} -st sia-afore-aims-cat-operaciones-dev -dt sia-afore-aims-cat-operaciones-pre 
+          echo Respaldando tabla 3 sia-afore-aims-cat-operaciones-dev
+          time python dynamo-move.py -sa ${{secrets.AWS_KEY_ID_DEVELOP}} -ss ${{secrets.AWS_KEY_SECRET_DEVELOP}} -da ${{secrets.AWS_KEY_ID_PREPROD}} -ds ${{secrets.AWS_KEY_SECRET_PREPROD}} -st sia-gen-aud-usuarios-dev -dt sia-gen-aud-usuarios-pre 
