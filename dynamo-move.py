@@ -156,7 +156,8 @@ def doesNotExist():
 def createDestinationTable(sourceTable):
     print("Inside createDestinationTable")
     source_table = source_session.resource('dynamodb').Table(sourceTable)
-
+    print(f"KeySchema: {source_table.key_schema}")
+    print(f"AttributeDefinitions: {source_table.attribute_definitions}")
     target_table = target_dynamodb.create_table(
     TableName=destinationTableName,
     KeySchema=source_table.key_schema,
