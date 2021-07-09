@@ -170,7 +170,7 @@ def createDestinationTable(sourceTable):
     print(f"AttributeDefinitions: {source_table.attribute_definitions}")
     justKeys = [Key['AttributeName'] for Key in source_table.key_schema]
     attributeDefinitionsJustKeys = [att for att in source_table.attribute_definitions if att['AttributeName'] in justKeys]
-    print(f"AttributeDefinitionsJustKeys: {AttributeDefinitionsJustKeys}")
+    print(f"AttributeDefinitionsJustKeys: {attributeDefinitionsJustKeys}")
     
     print(f"LocalSecondaryIndexes: {xlist(source_table.local_secondary_indexes)}")
     print(f"GlobalSecondaryIndexes: {xlist(source_table.global_secondary_indexes)}")
