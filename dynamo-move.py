@@ -164,11 +164,15 @@ def createDestinationTable(sourceTable):
     justKeys = [Key['AttributeName'] for Key in source_table.key_schema]
     attributeDefinitionsJustKeys = [att for att in source_table.attribute_definitions if att['AttributeName'] in justKeys]
     print(f"AttributeDefinitionsJustKeys: {attributeDefinitionsJustKeys}")
-
+    
+    #Lista elementos necesarios para crear un indice (Al leer los indices de la tabla orginal se debe eliminar cualquier otro que no esté en la lista)
     index_list_elements = ['IndexName', 'KeySchema', 'Projection', 'ProvisionedThroughput']
+    
+    # Tabla de Dynamo a crear
     dynamoTable ={}
     print(f"LocalSecondaryIndexes: {source_table.local_secondary_indexes}")
     print(f"GlobalSecondaryIndexes: {source_table.global_secondary_indexes}")
+    
     if source_table.local_secondary_indexes:
       justLSI = []
       for index in source_table.local_secondary_indexes:
@@ -194,8 +198,8 @@ def createDestinationTable(sourceTable):
       attributeDefinitionsJustKeys.append(attributeDefinitionsJustGSI)       
     
       gsis = []
-      for index in source_table.local_secondary_indexes:
-        new_index = dict( ((key, source_table.local_secondary_indexes[key]) for key in index_list_elements ) )
+      for index in source_table.global_secondary_indexes:
+        new_index = dict( ((key, source_table.global_secondary_indexes[key]) for key in index_list_elements ) )
         gsis = gsis + new_index
       dynamoTable["GlobalSecondaryIndexes"] = gsis
       
