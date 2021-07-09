@@ -170,7 +170,7 @@ def createDestinationTable(sourceTable):
     print(f"LocalSecondaryIndexes: {source_table.local_secondary_indexes}")
     print(f"GlobalSecondaryIndexes: {source_table.global_secondary_indexes}")
     if source_table.local_secondary_indexes:
-      justLSI = [Key['AttributeName'] for Key in ssource_table.local_secondary_indexes]
+      justLSI = [Key['AttributeName'] for Key in source_table.local_secondary_indexes]
       attributeDefinitionsJustLSI = [att for att in source_table.attribute_definitions if att['AttributeName'] in justLSI]
       attributeDefinitionsJustKeys = list(set(attributeDefinitionsJustKeys) | set(attributeDefinitionsJustLSI))      
     
