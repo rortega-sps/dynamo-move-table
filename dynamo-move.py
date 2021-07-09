@@ -173,6 +173,7 @@ def createDestinationTable(sourceTable):
     print(f"LocalSecondaryIndexes: {source_table.local_secondary_indexes}")
     print(f"GlobalSecondaryIndexes: {source_table.global_secondary_indexes}")
     
+    # Si la tabla origen tiene un LSI agregarlo en la tabla destino
     if source_table.local_secondary_indexes:
       justLSI = []
       for index in source_table.local_secondary_indexes:
@@ -184,11 +185,12 @@ def createDestinationTable(sourceTable):
       lsis = []
       
       for index in source_table.local_secondary_indexes:
-        new_index = dict( ((key, source_table.local_secondary_indexes[key]) for key in index_list_elements ) )
+        new_index = { key: index[key] for key in index_list_elements }
         lsis = lsis + new_index
         
       dynamoTable["LocalSecondaryIndexes"] = lsis
       
+    # Si la tabla orgien tiene un GSI agregarlo en la tabla destino  
     if source_table.global_secondary_indexes:
       justGSI = []
       for index in source_table.global_secondary_indexes:
@@ -199,7 +201,7 @@ def createDestinationTable(sourceTable):
     
       gsis = []
       for index in source_table.global_secondary_indexes:
-        new_index = dict( ((key, source_table.global_secondary_indexes[key]) for key in index_list_elements ) )
+        new_index = { key: index[key] for key in index_list_elements }
         gsis = gsis + new_index
       dynamoTable["GlobalSecondaryIndexes"] = gsis
       
