@@ -153,6 +153,13 @@ def doesNotExist():
     print("Exiting the execution")
     # sys.exit()
 
+def xlist(list):
+    if list == None:
+      return []
+    else:
+      return list
+    
+    
 def createDestinationTable(sourceTable):
     print("Inside createDestinationTable")
     source_table = source_session.resource('dynamodb').Table(sourceTable)
@@ -161,19 +168,19 @@ def createDestinationTable(sourceTable):
     
     print(f"KeySchema: {source_table.key_schema}")
     print(f"AttributeDefinitions: {source_table.attribute_definitions}")
-    JustKeys = [Key['AttributeName'] for Key in source_table.key_schema]
-    AttributeDefinitionsJustKeys = [Att for Att in source_table.attribute_definitions if Att['AttributeName'] in JustKeys]
+    justKeys = [Key['AttributeName'] for Key in source_table.key_schema]
+    attributeDefinitionsJustKeys = [att for att in source_table.attribute_definitions if att['AttributeName'] in justKeys]
     print(f"AttributeDefinitionsJustKeys: {AttributeDefinitionsJustKeys}")
     
-    print(f"LocalSecondaryIndexes: {source_table.local_secondary_indexes}")
-    print(f"GlobalSecondaryIndexes: {source_table.global_secondary_indexes}")
+    print(f"LocalSecondaryIndexes: {xlist(source_table.local_secondary_indexes)}")
+    print(f"GlobalSecondaryIndexes: {xlist(source_table.global_secondary_indexes)}")
     
     target_table = target_dynamodb.create_table(
       TableName=destinationTableName,
       KeySchema=source_table.key_schema,
-      AttributeDefinitions=AttributeDefinitionsJustKeys,
-      LocalSecondaryIndexes=source_table.local_secondary_indexes,
-      GlobalSecondaryIndexes=source_table.global_secondary_indexes,
+      AttributeDefinitions=attributeDefinitionsJustKeys.,
+      LocalSecondaryIndexes=xlist(source_table.local_secondary_indexes),
+      GlobalSecondaryIndexes=xlist(source_table.global_secondary_indexes),
       BillingMode='PAY_PER_REQUEST')
 
     target_table.wait_until_exists()
