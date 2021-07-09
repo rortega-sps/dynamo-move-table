@@ -166,10 +166,10 @@ def createDestinationTable(sourceTable):
     print(f"AttributeDefinitionsJustKeys: {attributeDefinitionsJustKeys}")
     
     dyanamoTable = {
-      TableName=destinationTableName,
-      KeySchema=source_table.key_schema,
-      AttributeDefinitions=attributeDefinitionsJustKeys,
-      BillingMode='PAY_PER_REQUEST'
+      'TableName': destinationTableName,
+      'KeySchema': source_table.key_schema,
+      'AttributeDefinitions': attributeDefinitionsJustKeys,
+      'BillingMode': 'PAY_PER_REQUEST'
     }
     
     print(f"LocalSecondaryIndexes: {source_table.local_secondary_indexes}")
