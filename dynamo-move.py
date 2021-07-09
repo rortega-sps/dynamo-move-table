@@ -193,7 +193,9 @@ def createDestinationTable(sourceTable):
     # Si la tabla orgien tiene un GSI agregarlo en la tabla destino  
     if source_table.global_secondary_indexes:
       justGSI = []
+      print("Indices:")
       for index in source_table.global_secondary_indexes:
+        print(f"    - {index}")
         justGSI = justGSI + [Key['AttributeName'] for Key in index['KeySchema']]
       
       attributeDefinitionsJustGSI = [att for att in source_table.attribute_definitions if att['AttributeName'] in justGSI]
