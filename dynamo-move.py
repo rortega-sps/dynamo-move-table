@@ -165,7 +165,7 @@ def createDestinationTable(sourceTable):
     attributeDefinitionsJustKeys = [att for att in source_table.attribute_definitions if att['AttributeName'] in justKeys]
     print(f"AttributeDefinitionsJustKeys: {attributeDefinitionsJustKeys}")
     
-    dyanamoTable = {
+    dynamoTable = {
       'TableName': destinationTableName,
       'KeySchema': source_table.key_schema,
       'AttributeDefinitions': attributeDefinitionsJustKeys,
