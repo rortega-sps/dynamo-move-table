@@ -170,14 +170,19 @@ def createDestinationTable(sourceTable):
     print(f"LocalSecondaryIndexes: {source_table.local_secondary_indexes}")
     print(f"GlobalSecondaryIndexes: {source_table.global_secondary_indexes}")
     if source_table.local_secondary_indexes:
-      justLSI = [Key['AttributeName'] for Key in source_table.local_secondary_indexes]
-      attributeDefinitionsJustLSI = [att for att in source_table.attribute_definitions if att['AttributeName'] in justLSI]
-      attributeDefinitionsJustKeys = list(set(attributeDefinitionsJustKeys) | set(attributeDefinitionsJustLSI))      
-    
+      justLSI = []
+      for index in source_table.local_secondary_indexes:
+        justLSI.append( [Key['AttributeName'] for Key in index['KeySchema']] )
+      
+      attributeDefinitionsJustLSI = [att for att in source_table.attribute_definitions if att['AttributeName'] in justLSI]      
+      attributeDefinitionsJustKeys = list(set(attributeDefinitionsJustKeys) | set(attributeDefinitionsJustLSI)) 
+      
       dynamoTable["LocalSecondaryIndexes"] = source_table.local_secondary_indexes
       
     if source_table.global_secondary_indexes:
-      justGSI = [Key['AttributeName'] for Key in source_table.global_secondary_indexes]
+      justGSI = []
+      for index in source_table.global_secondary_indexes:
+        justGSI.append( [Key['AttributeName'] for Key in index['KeySchema']] )
       attributeDefinitionsJustGSI = [att for att in source_table.attribute_definitions if att['AttributeName'] in justGSI]
       attributeDefinitionsJustKeys = list(set(attributeDefinitionsJustKeys) | set(attributeDefinitionsJustGSI))      
     
