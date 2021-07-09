@@ -177,7 +177,7 @@ def createDestinationTable(sourceTable):
       dynamoTable["LocalSecondaryIndexes"] = source_table.local_secondary_indexes
       
     if source_table.global_secondary_indexes:
-      justGSI = [Key['AttributeName'] for Key in ssource_table.global_secondary_indexes]
+      justGSI = [Key['AttributeName'] for Key in source_table.global_secondary_indexes]
       attributeDefinitionsJustGSI = [att for att in source_table.attribute_definitions if att['AttributeName'] in justGSI]
       attributeDefinitionsJustKeys = list(set(attributeDefinitionsJustKeys) | set(attributeDefinitionsJustGSI))      
     
