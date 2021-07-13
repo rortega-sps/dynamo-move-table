@@ -174,6 +174,7 @@ def createDestinationTable(sourceTable):
     print(f"GlobalSecondaryIndexes: {source_table.global_secondary_indexes}")
     
     # Si la tabla origen tiene un LSI agregarlo en la tabla destino
+    lsis = []
     if source_table.local_secondary_indexes:
       justLSI = []
       for index in source_table.local_secondary_indexes:
@@ -182,8 +183,7 @@ def createDestinationTable(sourceTable):
       attributeDefinitionsJustLSI = [att for att in source_table.attribute_definitions if att['AttributeName'] in justLSI]      
       attributeDefinitionsJustKeys = attributeDefinitionsJustKeys + attributeDefinitionsJustLSI
       
-      lsis = []
-      
+       
       for index in source_table.local_secondary_indexes:
         # Copiar indice sin los elementos llave de index_list_elements
         new_index = {k:v for k,v in index.items() if k in index_list_elements}        
@@ -192,6 +192,7 @@ def createDestinationTable(sourceTable):
       dynamoTable["LocalSecondaryIndexes"] = lsis
       
     # Si la tabla orgien tiene un GSI agregarlo en la tabla destino  
+    gsis = []
     if source_table.global_secondary_indexes:
       justGSI = []
       for index in source_table.global_secondary_indexes:
@@ -200,16 +201,11 @@ def createDestinationTable(sourceTable):
       attributeDefinitionsJustGSI = [att for att in source_table.attribute_definitions if att['AttributeName'] in justGSI]
       attributeDefinitionsJustKeys = attributeDefinitionsJustKeys + attributeDefinitionsJustGSI  
     
-      gsis = []
-      print("Indices:")
+      
       for index in source_table.global_secondary_indexes:
         # Copiar indice sin los elementos llave de index_list_elements
-        print(f"--Index: {index}")
-        print(f"--Items: {index.items()}")
-        print(f"--New Index: { {k:v for k,v in index.items() if k in index_list_elements} }")
         new_index = {k:v for k,v in index.items() if k in index_list_elements}
         gsis = gsis.append(new_index)
-      print(f"->>>GSIS: {gsis}")
       dynamoTable["GlobalSecondaryIndexes"] = gsis
       
     dynamoTable.update({
