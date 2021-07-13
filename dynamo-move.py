@@ -209,7 +209,7 @@ def createDestinationTable(sourceTable):
         print(f"--New Index: { {k:v for k,v in index.items() if k in index_list_elements} }")
         new_index = {k:v for k,v in index.items() if k in index_list_elements}
         gsis = gsis.append(new_index)
-      
+      print(f"->>>GSIS: {gsis}")
       dynamoTable["GlobalSecondaryIndexes"] = gsis
       
     dynamoTable.update({
