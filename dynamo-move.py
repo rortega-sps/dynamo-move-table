@@ -185,7 +185,7 @@ def createDestinationTable(sourceTable):
       lsis = []
       
       for index in source_table.local_secondary_indexes:
-        new_index = { key: index[key] for key in index_list_elements }
+        new_index = { key: index['KeySchema'][key] for key in index_list_elements }
         lsis = lsis.append(new_index)
         
       dynamoTable["LocalSecondaryIndexes"] = lsis
@@ -203,7 +203,7 @@ def createDestinationTable(sourceTable):
       print("Indices:")
       for index in source_table.global_secondary_indexes:
         print(f"  - {index}")
-        new_index = { key: index[key] for key in index_list_elements }
+        new_index = { key: index['KeySchema'][key] for key in index_list_elements }
         gsis = gsis.append(new_index)
       dynamoTable["GlobalSecondaryIndexes"] = gsis
       
