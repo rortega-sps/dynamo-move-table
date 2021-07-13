@@ -180,13 +180,13 @@ def createDestinationTable(sourceTable):
         justLSI = justGSI + [Key['AttributeName'] for Key in index['KeySchema']]
       
       attributeDefinitionsJustLSI = [att for att in source_table.attribute_definitions if att['AttributeName'] in justLSI]      
-      attributeDefinitionsJustKeys.append(attributeDefinitionsJustLSI) 
+      attributeDefinitionsJustKeys = attributeDefinitionsJustKeys + attributeDefinitionsJustLSI
       
       lsis = []
       
       for index in source_table.local_secondary_indexes:
         new_index = { key: index[key] for key in index_list_elements }
-        lsis = lsis.append(new_index)
+        lsis = lsis + new_index
         
       dynamoTable["LocalSecondaryIndexes"] = lsis
       
@@ -195,17 +195,16 @@ def createDestinationTable(sourceTable):
       justGSI = []
       print("Indices:")
       for index in source_table.global_secondary_indexes:
-        print(f"  - {index}")
         justGSI = justGSI + [Key['AttributeName'] for Key in index['KeySchema']]
-        print(f"  > { [Key['AttributeName'] for Key in index['KeySchema']] }")
       
       attributeDefinitionsJustGSI = [att for att in source_table.attribute_definitions if att['AttributeName'] in justGSI]
-      attributeDefinitionsJustKeys.append(attributeDefinitionsJustGSI)       
+      attributeDefinitionsJustKeys = attributeDefinitionsJustKeys + attributeDefinitionsJustGS)       
     
       gsis = []
       for index in source_table.global_secondary_indexes:
+        print(f"  - {index}")
         new_index = { key: index[key] for key in index_list_elements }
-        gsis = gsis.append(new_index)
+        gsis = gsis + new_index
       dynamoTable["GlobalSecondaryIndexes"] = gsis
       
     dynamoTable.update({
