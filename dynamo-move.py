@@ -204,6 +204,9 @@ def createDestinationTable(sourceTable):
       print("Indices:")
       for index in source_table.global_secondary_indexes:
         # Copiar indice sin los elementos llave de index_list_elements
+        print(f"--Index: {index}")
+        print(f"--Items: {index.items()}")
+        print(f"--New Index: { {k:v for k,v in index.items() if k in index_list_elements} }")
         new_index = {k:v for k,v in index.items() if k in index_list_elements}
         gsis = gsis.append(new_index)
       
