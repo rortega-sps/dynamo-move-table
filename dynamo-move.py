@@ -167,7 +167,7 @@ def createDestinationTable(sourceTable):
     print(f"AttributeDefinitionsJustKeys: {attributeDefinitionsJustKeys}")
     
     #Lista elementos necesarios para crear un indice (Al leer los indices de la tabla orginal se debe eliminar cualquier otro que no esté en la lista)
-    index_list_elements = ['IndexName', 'KeySchema', 'Projection', 'ProvisionedThroughput']
+    index_list_elements = ['IndexName', 'KeySchema', 'Projection']
     
     # Tabla de Dynamo a crear
     dynamoTable ={}
@@ -188,7 +188,6 @@ def createDestinationTable(sourceTable):
       for index in source_table.local_secondary_indexes:
         # Copiar indice sin los elementos llave de index_list_elements
         new_index = {k:v for k,v in index.items() if k in index_list_elements}        
-        new_index['ProvisionedThroughput'].pop('NumberOfDecreasesToday')
         lsis.append(copy.deepcopy(new_index))
         
       dynamoTable["LocalSecondaryIndexes"] = lsis
@@ -206,7 +205,6 @@ def createDestinationTable(sourceTable):
       for index in source_table.global_secondary_indexes:
         # Copiar indice sin los elementos llave de index_list_elements
         new_index = {k:v for k,v in index.items() if k in index_list_elements}
-        new_index['ProvisionedThroughput'].pop('NumberOfDecreasesToday')
         print(f"--new_index: {new_index}")
         gsis.append(copy.deepcopy(new_index))
         print(f"--GSIS: {gsis}")
