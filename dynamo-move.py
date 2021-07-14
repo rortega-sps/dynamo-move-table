@@ -205,10 +205,8 @@ def createDestinationTable(sourceTable):
       for index in source_table.global_secondary_indexes:
         # Copiar indice sin los elementos llave de index_list_elements
         new_index = {k:v for k,v in index.items() if k in index_list_elements}
-        print(f"--new_index: {new_index}")
         gsis.append(copy.deepcopy(new_index))
-        print(f"--GSIS: {gsis}")
-      print(f">>GSIS: {gsis}")
+      
       dynamoTable["GlobalSecondaryIndexes"] = gsis
       
     dynamoTable.update({
