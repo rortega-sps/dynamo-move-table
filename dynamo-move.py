@@ -5,6 +5,7 @@ import os
 import sys
 import argparse
 import datetime
+import copy
 
 
 global args
@@ -187,7 +188,7 @@ def createDestinationTable(sourceTable):
       for index in source_table.local_secondary_indexes:
         # Copiar indice sin los elementos llave de index_list_elements
         new_index = {k:v for k,v in index.items() if k in index_list_elements}        
-        lsis = lsis.append(new_index.deepcopy())
+        lsis = lsis.append(copy.deepcopy(new_index))
         
       dynamoTable["LocalSecondaryIndexes"] = lsis
       
@@ -205,7 +206,7 @@ def createDestinationTable(sourceTable):
         # Copiar indice sin los elementos llave de index_list_elements
         new_index = {k:v for k,v in index.items() if k in index_list_elements}
         print(f"--new_index: {new_index}")
-        gsis = gsis.append(new_index.deepcopy())
+        gsis = gsis.append(copy.deepcopy(new_index))
         print(f"--GSIS: {gsis}")
       print(f">>GSIS: {gsis}")
       dynamoTable["GlobalSecondaryIndexes"] = gsis
