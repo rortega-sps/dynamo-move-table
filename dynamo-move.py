@@ -188,6 +188,7 @@ def createDestinationTable(sourceTable):
       for index in source_table.local_secondary_indexes:
         # Copiar indice sin los elementos llave de index_list_elements
         new_index = {k:v for k,v in index.items() if k in index_list_elements}        
+        new_index['ProvisionedThroughput'].pop('NumberOfDecreasesToday')
         lsis.append(copy.deepcopy(new_index))
         
       dynamoTable["LocalSecondaryIndexes"] = lsis
