@@ -198,7 +198,7 @@ def createDestinationTable(sourceTable):
       for index in source_table.global_secondary_indexes:
         justGSI = justGSI + [Key['AttributeName'] for Key in index['KeySchema']]
       
-      attributeDefinitionsJustGSI = [att for att in source_table.attribute_definitions if att['AttributeName'] in justGSI if att['AttributeName'] in justKeys]
+      attributeDefinitionsJustGSI = [att for att in source_table.attribute_definitions if (att['AttributeName'] in justGSI) if (att['AttributeName'] in justKeys)]
       attributeDefinitionsJustKeys = attributeDefinitionsJustKeys + attributeDefinitionsJustGSI  
     
       gsis = []
