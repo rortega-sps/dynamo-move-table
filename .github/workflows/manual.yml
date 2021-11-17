@@ -1,0 +1,28 @@
+name: sia-release
+
+on:
+  workflow_dispatch:
+    inputs:
+      proyecto:
+        type: string
+        description: 'Proyecto de SAM a desplegar'
+        required: true
+      version:
+        type: string
+        description: 'Número de versión de la liberación'
+        
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        ref: ${{ github.head_ref }
+    - name: Send greeting
+      run: echo "Hello ${{ github.event.inputs.name }}"
+    - name: Crear rama release
+      run: |
+        git config --global user.name 'SIAGithub'
+        git config --global user.email 'sia@noreply.github.com'
+        git checkout -b releases/${{github.event.inputs.proyecto}}/${{github.event.inputs.version}}
+        git push -u origin releases/${{github.event.inputs.proyecto}}/${{github.event.inputs.version}}
