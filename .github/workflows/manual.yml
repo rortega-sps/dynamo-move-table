@@ -4,12 +4,17 @@ on:
   workflow_dispatch:
     inputs:
       proyecto:
-        type: string
+        type: choice
         description: 'Proyecto de SAM a desplegar'
         required: true
+        options:
+        - sia-utileria-notificaciones-teams
+        - sia-afore-md
+        - sia-afore-mo
       version:
         type: string
         description: 'Número de versión de la liberación'
+        required: true
         
 jobs:
   release:
