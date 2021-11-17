@@ -29,6 +29,7 @@ jobs:
       run: |
         git config --global user.name 'SIAGithub'
         git config --global user.email 'sia@noreply.github.com'
+        git checkout preprod
         git checkout -b releases/${{github.event.inputs.proyecto}}/${{github.event.inputs.version}}
         git tag ${{github.event.inputs.proyecto}}/${{github.event.inputs.version}}
         git push --tags -u origin releases/${{github.event.inputs.proyecto}}/${{github.event.inputs.version}}
