@@ -29,3 +29,5 @@ jobs:
         git push --tags -u origin releases/${{github.event.inputs.proyecto}}/${{github.event.inputs.version}}
     - name: Release
       uses: softprops/action-gh-release@v1
+      with:
+        tag_name: ${{github.event.inputs.proyecto}}/${{github.event.inputs.version}}
