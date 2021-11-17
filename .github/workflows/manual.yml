@@ -25,4 +25,7 @@ jobs:
         git config --global user.name 'SIAGithub'
         git config --global user.email 'sia@noreply.github.com'
         git checkout -b releases/${{github.event.inputs.proyecto}}/${{github.event.inputs.version}}
-        git push -u origin releases/${{github.event.inputs.proyecto}}/${{github.event.inputs.version}}
+        git tag ${{github.event.inputs.proyecto}}/${{github.event.inputs.version}}
+        git push --tags -u origin releases/${{github.event.inputs.proyecto}}/${{github.event.inputs.version}}
+    - name: Release
+      uses: softprops/action-gh-release@v1
