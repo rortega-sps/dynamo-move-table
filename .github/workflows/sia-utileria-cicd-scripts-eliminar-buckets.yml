@@ -1,0 +1,120 @@
+#V1.0.0
+name: sia-cicd-scripts-eliminar-buckets
+on:
+  workflow_dispatch:
+    inputs:
+      ambiente:
+        description: Ambiente en el cual se eliminaran los buckets
+        required: true
+        type: choice
+        options:
+          - 'dev'
+          - 'pre'
+          - 'prod'
+
+defaults:
+  run:
+    working-directory: "utileria/cicd/scripts/"
+
+jobs:
+  ############ PULL REQUEST  DEVELOP ##############
+  # Si es un PR a develop, desplegar
+  DeleteBucketsDev:
+    if: ${{github.event.inputs.ambiente == 'dev'}}
+    runs-on: ubuntu-latest
+    #environment: develop
+    steps:
+      - uses: actions/checkout@v2
+      # Imprimir variables
+      - name: "Variables de referencia"
+        run: |
+          echo "Head Ref - $GITHUB_HEAD_REF"
+          echo "Branch -  $GITHUB_REF"
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '3.8'
+      - uses: aws-actions/setup-sam@v0
+      - uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_KEY }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET }}
+          aws-region: us-east-1
+      - name: "Eliminar buckets"
+        run: |
+          pip install boto3
+          python eliminar-buckets.py dev
+      - name: "Notificación de error"
+        if: ${{ failure() }}
+        run: |
+          curl -H 'Content-Type: application/json' \
+          --retry 4 \
+          --retry-delay 1 \
+          -d '{"text": "'"$PWD"' - '"$GITHUB_EVENT_NAME"' - ${{job.status}} - '"$GITHUB_REF"' - '"$GITHUB_BASE_REF"' "}' \
+          https://mxspsolutions.webhook.office.com/webhookb2/a84b113f-9d27-4138-84ae-e3e4ab4830f2@ac5349df-152e-486f-9b39-fe3c4a25efe0/IncomingWebhook/e2f3db57ac59459a938f44c822548b89/10ed5eda-9b70-4598-858a-e5ae6599fa66
+
+  DeleteBucketsPre:
+    if: ${{github.event.inputs.ambiente == 'pre'}}
+    runs-on: ubuntu-latest
+    #environment: preprod
+    steps:
+      - uses: actions/checkout@v2
+      # Imprimir variables
+      - name: "Variables de referencia"
+        run: |
+          echo "Head Ref - $GITHUB_HEAD_REF"
+          echo "Branch -  $GITHUB_REF"
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '3.8'
+      - uses: aws-actions/setup-sam@v0
+      - uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_KEY }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET }}
+          aws-region: us-east-1
+      - name: "Eliminar buckets"
+        run: |
+          pip install boto3
+          python eliminar-buckets.py pre
+      - name: "Notificación de error"
+        if: ${{ failure() }}
+        run: |
+          curl -H 'Content-Type: application/json' \
+          --retry 4 \
+          --retry-delay 1 \
+          -d '{"text": "'"$PWD"' - '"$GITHUB_EVENT_NAME"' - ${{job.status}} - '"$GITHUB_REF"' - '"$GITHUB_BASE_REF"' "}' \
+          https://mxspsolutions.webhook.office.com/webhookb2/a84b113f-9d27-4138-84ae-e3e4ab4830f2@ac5349df-152e-486f-9b39-fe3c4a25efe0/IncomingWebhook/e2f3db57ac59459a938f44c822548b89/10ed5eda-9b70-4598-858a-e5ae6599fa66
+
+
+  DeleteBucketsProd:
+    if: ${{github.event.inputs.ambiente == 'prod'}}
+    runs-on: ubuntu-latest
+    #environment: production
+    steps:
+      - uses: actions/checkout@v2
+      # Imprimir variables
+      - name: "Variables de referencia"
+        run: |
+          echo "Head Ref - $GITHUB_HEAD_REF"
+          echo "Branch -  $GITHUB_REF"
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '3.8'
+      - uses: aws-actions/setup-sam@v0
+      - uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_KEY }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET }}
+          aws-region: us-east-1
+      - name: "Eliminar buckets"
+        run: |
+          pip install boto3
+          python eliminar-buckets.py prod
+      - name: "Notificación de error"
+        if: ${{ failure() }}
+        run: |
+          curl -H 'Content-Type: application/json' \
+          --retry 4 \
+          --retry-delay 1 \
+          -d '{"text": "'"$PWD"' - '"$GITHUB_EVENT_NAME"' - ${{job.status}} - '"$GITHUB_REF"' - '"$GITHUB_BASE_REF"' "}' \
+          https://mxspsolutions.webhook.office.com/webhookb2/a84b113f-9d27-4138-84ae-e3e4ab4830f2@ac5349df-152e-486f-9b39-fe3c4a25efe0/IncomingWebhook/e2f3db57ac59459a938f44c822548b89/10ed5eda-9b70-4598-858a-e5ae6599fa66
