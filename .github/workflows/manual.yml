@@ -25,14 +25,26 @@ jobs:
         ref: ${{ github.head_ref }}
     - name: Send greeting
       run: echo "Hello ${{ github.event.inputs.name }}"
-    - name: Crear rama release
+    - name: Configurar Git
       run: |
         git config --global user.name 'SIAGithub'
         git config --global user.email 'sia@noreply.github.com'
         git checkout preprod
-        git checkout -b releases/${{github.event.inputs.proyecto}}/${{github.event.inputs.version}}
+    - name: Separar cambios
+      run: |
+        mkdir ./splitsh
+        echo "wget"
+        wget https://github.com/splitsh/lite/releases/download/v1.0.1/lite_linux_amd64.tar.gz
+        echo "ls"
+        ls -la
+        echo "tar"
+        tar -zxf lite_linux_amd64.tar.gz --directory ./splitsh
+        ./splitsh/splitsh-lite --prefix=afore/workflows/sia-afore-md --target=refs/heads/releases/${{github.event.inputs.proyecto}}/${{github.event.inputs.version}}
+    - name: Crear rama release
+      run: |
+        git checkout releases/${{github.event.inputs.proyecto}}/${{github.event.inputs.version}}
         git tag ${{github.event.inputs.proyecto}}/${{github.event.inputs.version}}
-        git push --tags -u origin releases/${{github.event.inputs.proyecto}}/${{github.event.inputs.version}}
+        git push --tags -u origin releases/${{github.event.inputs.proyecto}}/${{github.event.inputs.version}}  
     - name: Release
       uses: softprops/action-gh-release@v1
       with:
