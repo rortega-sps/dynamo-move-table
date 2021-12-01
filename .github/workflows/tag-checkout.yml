@@ -33,5 +33,5 @@ jobs:
           ls -la
           git show
           git status
-
+          echo ${{secrets.MENSAJE}} | sed 's/./& /g'
 
