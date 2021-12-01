@@ -6,6 +6,14 @@ on:
 
   workflow_dispatch:
     inputs:
+      ambiente:
+        type: choice
+        description: 'Ambiente al cual se despliega'
+        required: true
+        options:
+        - develop
+        - preprod
+        - production
       proyecto:
         type: choice
         description: 'Pruebas con Tag Checkout'
@@ -24,7 +32,7 @@ jobs:
 
     runs-on: ubuntu-latest
 
-    environment: production
+    environment: ${{github.event.inputs.ambiente}}
     steps:
       - uses: actions/checkout@v2
         with:
