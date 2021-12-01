@@ -17,4 +17,7 @@ jobs:
         with:
           ref: refs/tags/sia-utileria-notificaciones-teams/1.0.4
       - name: Listar interior
-        run: ls -la
+        run: |
+          ls -la
+          git show
+          git status
