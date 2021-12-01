@@ -41,7 +41,7 @@ jobs:
         echo "tar"
         tar --verbose -zxpf lite_linux_amd64.tar.gz --directory ./splitsh
         ls -la ./splitsh
-        ./splitsh/splitsh-lite --prefix=afore/workflows/sia-afore-md --target=refs/heads/releases/${{github.event.inputs.proyecto}}/${{github.event.inputs.version}}
+        ./splitsh/splitsh-lite --prefix=afore/workflows/sia-afore-md --target=refs/heads/releases/${{github.event.inputs.proyecto}}/${{github.event.inputs.version}} --progress
     - name: Crear rama release
       run: |
         git checkout releases/${{github.event.inputs.proyecto}}/${{github.event.inputs.version}}
