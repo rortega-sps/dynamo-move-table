@@ -19,12 +19,11 @@ on:
         description: 'Número de versión de la liberación'
         required: true
 jobs:
-  build:
 ################ PRODUCTION #######################
   deployProduction:
-    if: ${{github.event.inputs.ambiente == 'prod'}}
+
     runs-on: ubuntu-latest
-    needs: deployPreprod
+
     environment: production
     steps:
       - uses: actions/checkout@v2
