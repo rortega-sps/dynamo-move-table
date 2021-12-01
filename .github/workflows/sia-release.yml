@@ -38,7 +38,7 @@ jobs:
         echo "ls"
         ls -la
         echo "tar"
-        tar -h
+        tar --help
         ./splitsh/splitsh-lite --prefix=afore/workflows/sia-afore-md --target=refs/heads/releases/${{github.event.inputs.proyecto}}/${{github.event.inputs.version}}
     - name: Crear rama release
       run: |
