@@ -36,7 +36,7 @@ def lambda_handler(event, context):
     return {
         "statusCode": 200,
         "body": json.dumps({
-            "message": "hello world from Trunk based. Disparando workflow!.",
+            "message": "hello world from Trunk based. Disparando workflow 2.0.1!",
             # "location": ip.text.replace("\n", "")
         }),
     }
