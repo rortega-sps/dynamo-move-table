@@ -62,7 +62,6 @@ jobs:
       - name: "Deploy SAM"
         run: |
           sam deploy \
-          --role-arn arn:aws:iam::${{secrets.AWS_ID}}:role/sia-iam-role-github-backend \
           --no-confirm-changeset \
           --no-fail-on-empty-changeset \
           --stack-name "${{env.samName}}-${{env.samEnv}}" \
