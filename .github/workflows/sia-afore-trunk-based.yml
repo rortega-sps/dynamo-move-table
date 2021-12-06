@@ -1,0 +1,80 @@
+#V1.0.0
+name: sia-afore-md
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "afore/workflows/trunk-based/**"
+      # use negative pattern to exclude directories/files
+      - '!**/README.md'
+      - '!**/tests/**'
+      - '!**/test/**'
+      - '!**/.github/workflows/*.yml'
+      - '!**/.github/workflows/*.yaml'
+  workflow_dispatch:
+
+defaults:
+  run:
+    working-directory: "afore/workflows/trunk-based/"
+
+jobs:
+  ############ PULL REQUEST  DEVELOP ##############
+  # Si es un PR a develop, desplegar
+  DeployPRDevelop:
+    runs-on: ubuntu-latest
+    environment: develop
+    steps:
+      - uses: actions/checkout@v2
+      # Imprimir variables
+      - name: "Variables de referencia"
+        run: |
+          echo "Head Ref - $GITHUB_HEAD_REF"
+          echo "Branch -  $GITHUB_REF"
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '3.8'
+      - uses: aws-actions/setup-sam@v0
+      - uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_KEY }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET }}
+          aws-region: us-east-1
+      # Colocar variable de ambiente
+      - run: echo "samEnv=dev" >> $GITHUB_ENV
+      # Crear bucket si no existe
+      - name: "Crear bucket si no existe"
+        run: aws s3api head-bucket --bucket "pfg-sia-sam-backend" 2>/dev/null || aws s3 mb s3://pfg-sia-sam-backend
+      # Obtener nombre de carpeta
+      - run: echo "samName=${PWD##*/}" >> $GITHUB_ENV
+      # Linter Cloudformation
+      - name: "CFN Lint"
+        run: |
+          pip install cfn-lint
+          cfn-lint template.yaml
+      # Validar plantilla
+      - name: "Validar plantilla"
+        run: sam validate
+      # Construye usando Docker
+      - name: "Construir SAM"
+        run: sam build --use-container --build-image public.ecr.aws/sam/build-python3.8:1.32.0
+      # Aplicar cambios en la aplicación no muestra error si el stack no cambia
+      - name: "Deploy SAM"
+        run: |
+          sam deploy \
+          --role-arn arn:aws:iam::${{secrets.AWS_ID}}:role/sia-iam-role-github-backend \
+          --no-confirm-changeset \
+          --no-fail-on-empty-changeset \
+          --stack-name "${{env.samName}}-${{env.samEnv}}" \
+          --s3-bucket "pfg-sia-sam-backend" \
+          --s3-prefix "${{env.samName}}-${{env.samEnv}}" \
+          --capabilities CAPABILITY_IAM CAPABILITY_NAMED_IAM \
+          --region "us-east-1" \
+          --parameter-overrides "EnvName=${{env.samEnv}} KeyKMSARN=${{secrets.AWS_KMS_ARN}}"
+      - name: "Notificación de error"
+        if: ${{ failure() }}
+        run: |
+          curl -H 'Content-Type: application/json' \
+          --retry 4 \
+          --retry-delay 1 \
+          -d '{"text": "'"$PWD"' - '"$GITHUB_EVENT_NAME"' - ${{job.status}} - '"$GITHUB_REF"' - '"$GITHUB_BASE_REF"' "}' \
