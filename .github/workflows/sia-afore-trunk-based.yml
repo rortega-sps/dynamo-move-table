@@ -70,16 +70,6 @@ jobs:
           --capabilities CAPABILITY_IAM CAPABILITY_NAMED_IAM \
           --region "us-east-1" \
           --parameter-overrides "EnvName=${{env.samEnv}} KeyKMSARN=${{secrets.AWS_KMS_ARN}}"
-
-      - name: "Stack version"
-        run: |
-          aws cloudformation update-stack \
-          --stack-name "${{env.samName}}-${{env.samEnv}}" \
-          --use-previous-template \
-          --capabilities CAPABILITY_IAM CAPABILITY_NAMED_IAM \
-          --tags \
-              Key=version,Value=$VERSION
-
       - name: "Notificación de error"
         if: ${{ failure() }}
         run: |
