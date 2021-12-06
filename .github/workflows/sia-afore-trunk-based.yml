@@ -44,7 +44,7 @@ jobs:
       - run: echo "samEnv=dev" >> $GITHUB_ENV
       # Crear bucket si no existe
       - name: "Crear bucket si no existe"
-        run: aws s3api head-bucket --bucket "pfg-sia-sam-backend" 2>/dev/null || aws s3 mb s3://pfg-sia-sam-backend
+        run: aws s3api head-bucket --bucket "pfg-sia-sam-trunk-based" 2>/dev/null || aws s3 mb s3://pfg-sia-sam-trunk-based
       # Obtener nombre de carpeta
       - run: echo "samName=${PWD##*/}" >> $GITHUB_ENV
       # Linter Cloudformation
@@ -66,7 +66,7 @@ jobs:
           --no-confirm-changeset \
           --no-fail-on-empty-changeset \
           --stack-name "${{env.samName}}-${{env.samEnv}}" \
-          --s3-bucket "pfg-sia-sam-backend" \
+          --s3-bucket "pfg-sia-sam-trunk-based" \
           --s3-prefix "${{env.samName}}-${{env.samEnv}}" \
           --capabilities CAPABILITY_IAM CAPABILITY_NAMED_IAM \
           --region "us-east-1" \
