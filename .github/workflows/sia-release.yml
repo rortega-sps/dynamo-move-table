@@ -27,7 +27,10 @@ jobs:
         ref: ${{ github.head_ref }}
         fetch-depth: 0
     - name: Send greeting
-      run: echo "Hello ${{ github.event.inputs.name }}"
+      run: |
+        echo "Hello $HOME"
+        echo $PWD
+        pwd
     - name: Configurar Git
       run: |
         git config --global user.name 'SIAGithub'
